@@ -1,0 +1,22 @@
+# Import construction environment
+Import('env')
+# cppath and libpath has to be adjusted to match the library directory of librobotcomm
+cpppath = ['../ur-urlibs']
+libpath = ['../ur-urlibs']
+libs = ['robotcomm', 'rt', 'configuration', 'kinematics', 'dev', 'collision', 'math', 'm',  env['PYTHON_LIB']]
+ccflags = ['-O2', '-Wall', '-g']
+env = Environment(CC = 'g++',
+                  CPPPATH = cpppath,
+                  LIBPATH = libpath,
+                  LIBS = libs,
+                  CCFLAGS = ccflags) 
+
+
+base_src = ['base_utils.cpp', 'startup_utils.cpp', 'interrupt_utils.cpp']
+tcp_src = ['router_tcp.cpp'] + base_src
+udp_src = ['router_udp.cpp'] + base_src
+
+tcp_prog = env.Program(target='router_tcp', source=tcp_src)
+udp_prog = env.Program(target='router_udp', source=udp_src)
+
+env.Default(tcp_prog)

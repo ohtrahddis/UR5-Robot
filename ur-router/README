@@ -1,0 +1,68 @@
+This proram provides a TCP network interface to some functions
+of the UR_COMM_API. It has to run on the Universal Robots
+controller box.
+
+This program is very experimental and the use of it can lead to 
+damage of personal and hardware. DO NOT USE IT UNDER ANY 
+CIRCUMSTANCES!!! It is just for demonstration purposes to show
+how to access the UR_COMM_API.
+
+The code, the protocol, the logic, etc., may be subject to change 
+without any further notice.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+== Control Connection ==
+
+When a client connects to port 5002 of the Universal Robots 
+controller, the actual status send out with a frequency of 
+125Hz. Dvery status packet must be responded within 3ms-4ms.
+All exchange of packages is little endian with no byte alignment.
+
+=== Status Packet ===
+
+ID: [unisgned byte] The protocol ID
+Counter: [unsigned long] The packet counter
+Joint positions: [6x double] The measured joint positions in rad
+Joint velocities: [6x double] The measured joint angular velocities in rad/s
+
+=== Return Packet ===
+
+ID: [unisgned byte] The protocol ID
+Counter: [unsigned long] The packet counter
+Joint positions: [6x double] The joint positions to command in rad
+
+optionally:
+
+ID: [unisgned byte] The protocol ID
+Counter: [unsigned long] The packet counter
+Joint positions: [6x double] The joint positions to command in rad
+Joint velocities: [6x double] The joint velocities to command in rad/s
+Joint accelerations: [6x double] The joint accelerations to command in rad/s^2
+
+
+== IO Connection ==
+
+Another TCP server listens at port 5003 and provides functionality 
+to switch digital IOs on the controller.
+
+=== IO packet ===
+
+Port: The IO port to switch
+Value: 0x00 or 0x01 to switch IO off/on.
+
+== Installation ==
+
+To compile the program on the controller box the debian packet "scons" 
+has to be installed.
