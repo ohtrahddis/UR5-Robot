@@ -1,0 +1,19 @@
+# Import construction environment
+Import('env')
+
+example_source = Split('''example_robotcomm.c''')
+example_LIBPATH = ['.']
+example_LIBS = ['robotcomm', 'kinematics', 'configuration', 'dev', 'collision', 'm', 'math', 'legacy']
+example_CPPDEFINES='NDEBUG' 
+example_CCFLAGS='-O2 -Wall -m32'
+
+###############################################################################
+
+# Build 'example' (link using g++)
+env = Environment(CC = 'g++')  # link using g++
+env.Program(target = 'example',
+            source = example_source,
+            LIBPATH = example_LIBPATH,
+            LIBS = example_LIBS, 
+            CCFLAGS = example_CCFLAGS,
+            CPPDEFINES = example_CPPDEFINES)
