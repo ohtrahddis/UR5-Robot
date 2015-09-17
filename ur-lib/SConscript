@@ -1,0 +1,19 @@
+# Import construction environment
+Import('env')
+
+
+example_source = Split('''example_robotcomm.c''')
+example_CPPPATH = ['./common/']
+example_LIBPATH = ['.']
+example_LIBS = ['robotcomm', 'configuration', 'kinematics', 'dev', 'collision', 'm', 'math']
+
+
+###############################################################################
+
+# Build 'example' (link using g++)
+env = Environment(CC = 'g++')  # link using g++
+env.Program(target = 'example',
+            source = example_source,
+            LIBPATH = example_LIBPATH,
+            LIBS = example_LIBS)
+
